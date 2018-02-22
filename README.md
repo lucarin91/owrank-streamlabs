@@ -15,5 +15,6 @@ After the installation, it is possible to configure the command using the UI int
 
 ## Acknowledgement
 The command use [overwatch-api](https://github.com/alfg/overwatch-api) to get the rank statistics.
+
 ## Licence
 MIT licence
