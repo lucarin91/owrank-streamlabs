@@ -1,0 +1,48 @@
+{
+    "output_file": "settings.json",
+    "battletag": {
+        "type": "textbox",
+        "value": "<battletag1>, <battletag2>",
+        "label": "Battletag",
+        "tooltip": "The list of battletag that are used to show the rank.",
+        "group": "Configuration"
+    },
+    "region": {
+        "type": "textbox",
+        "value": "eu",
+        "label": "Region",
+        "tooltip": "The region where the account usually play.",
+        "group": "Configuration"
+    },
+    "message": {
+        "type": "textbox",
+        "value": "Rank:",
+        "label": "Messsage",
+        "tooltip": "The message show before the rank information.",
+        "group": "Advance"
+    },
+    "command": {
+        "type": "textbox",
+        "value": "!owrank",
+        "label": "Command",
+        "tooltip": "The command name",
+        "group": "Advance"
+    },
+    "cooldown": {
+        "type": "slider",
+        "label": "Cooldown",
+        "value": 10,
+        "min": 0,
+        "max": 20,
+        "ticks": 1,
+        "tooltip": "The interval between two consecutive execution of the command",
+        "group": "Advance"
+    },
+    "show": {
+        "type": "button",
+        "label": "Show rank",
+        "tooltip": "This show the rank on the chat",
+        "function": "ShowRank",
+        "group": "Action"
+    }
+}
