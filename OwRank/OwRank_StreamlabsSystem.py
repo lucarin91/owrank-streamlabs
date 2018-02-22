@@ -48,8 +48,7 @@ def Execute(data):
         if data.GetParam(0).lower() == _command\
            and not Parent.IsOnCooldown(ScriptName, _command)\
            and Parent.HasPermission(data.User, _command_permission, _command_info):
-            ranks = [(user.split('-')[0], get_rank(user, _region)) for user in _battletag]
-            responce = "{} {}".format(_message, ', '.join(['{}->{}'.format(u, r) for u, r in ranks]))
+            responce = build_message()
             Parent.SendTwitchMessage(responce)
 
 #---------------------------------------
@@ -68,9 +67,7 @@ def ReloadSettings(jsonData):
 # My functions
 #---------------------------------------
 def get_rank(username, region='eu'):
-    """
-    Return the rank of the username given in input.
-    """
+    """Return the rank of the username given in input."""
     url = 'http://ow-api.herokuapp.com/profile/pc/{}/{}'.format(region, username)
     res_raw = Parent.GetRequest(url, {})
     res = json.loads(res_raw)
@@ -90,9 +87,7 @@ def get_rank(username, region='eu'):
     return rank
 
 def parse_conf(conf):
-    """
-    Set the configuration variable.
-    """
+    """Set the configuration variable."""
     global _battletag, _region, _message, _command, _cooldown
     _battletag = [b.strip() for b in conf['battletag'].split(',')]
     _region = conf['region']
@@ -100,3 +95,16 @@ def parse_conf(conf):
     _command = conf['command']
     _cooldown = conf['cooldown']
     Parent.Log(ScriptName, 'Load conf: {}'.format((_battletag, _region, _message, _command, _cooldown)))
+
+def build_message():
+    """Build the message with the rank to sent to the chat."""
+    ranks = [(user.split('-')[0], get_rank(user, _region)) for user in _battletag]
+    responce = "{} {}".format(_message, ', '.join(['{}->{}'.format(u, r) for u, r in ranks]))
+    return responce
+
+def ShowRank():
+    """Send the rank to the chat."""
+    Parent.Log(ScriptName, 'Send rank to chat!')
+    responce = build_message()
+    Parent.SendTwitchMessage(responce)
+    

@@ -43,6 +43,7 @@
         "label": "Show rank",
         "tooltip": "This show the rank on the chat",
         "function": "ShowRank",
+        "wsevent": "EVENT_START_RANK",
         "group": "Action"
     }
 }
