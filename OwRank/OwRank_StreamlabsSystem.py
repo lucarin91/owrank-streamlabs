@@ -34,7 +34,7 @@ _cooldown = 10
 # [Required] Intialize Data (Only called on Load)
 #---------------------------------------
 def Init():
-    with io.open('Twitch/Scripts/owrank/settings.json', mode='r', encoding='utf-8-sig') as f:
+    with io.open('Services/Scripts/OwRank/settings.json', mode='r', encoding='utf-8-sig') as f:
         string = f.read()
         Parent.Log(ScriptName, 'Load json: {}'.format(string))
         conf = json.loads(string)
@@ -82,9 +82,8 @@ def get_rank(username, region='eu'):
         Parent.Log(ScriptName, 'Remote service error.')
         return
 
-    rank = data['competitive']
-    rank = rank['rank']
-    return rank
+    rank = data['competitive']['rank']
+    return rank if rank is not None else "not placed"
 
 def parse_conf(conf):
     """Set the configuration variable."""
