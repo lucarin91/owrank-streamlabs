@@ -1,1 +1,7 @@
+# Visual Studio Code
+.vscode/
+
+# python
 *.pyc
+
+*.zip
