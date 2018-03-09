@@ -5,6 +5,7 @@
 import sys
 import io
 import json
+from os.path import isfile
 import clr
 clr.AddReference("IronPython.SQLite.dll")
 clr.AddReference("IronPython.Modules.dll")
@@ -13,11 +14,11 @@ import datetime
 #---------------------------------------
 # [Required] Script Information
 #---------------------------------------
-ScriptName = "OwRankCommand"
+ScriptName = "OwRank"
 Website = "https://github.com/lucarin91/overwatch-streamlabs"
 Description = "Return the hoster rank on Overwatch."
 Creator = "lucarin91"
-Version = "1.0.0"
+Version = "1.1.0"
 
 #---------------------------------------
 # Set Variables
@@ -34,11 +35,13 @@ _cooldown = 10
 # [Required] Intialize Data (Only called on Load)
 #---------------------------------------
 def Init():
-    with io.open('Services/Scripts/OwRank/settings.json', mode='r', encoding='utf-8-sig') as f:
-        string = f.read()
-        Parent.Log(ScriptName, 'Load json: {}'.format(string))
-        conf = json.loads(string)
-        parse_conf(conf)
+    settings = 'Services/Scripts/{}/settings.json'.format(ScriptName)
+    if isfile(settings):
+        with io.open(settings, mode='r', encoding='utf-8-sig') as f:
+            string = f.read()
+            Parent.Log(ScriptName, 'Load json: {}'.format(string))
+            conf = json.loads(string)
+            parse_conf(conf)
 
 #---------------------------------------
 # [Required] Execute Data / Process Messages
@@ -74,13 +77,11 @@ def get_rank(username, region='eu'):
     status, data = res['status'], json.loads(res['response'])
     if status != 200:
         Parent.Log(ScriptName, 'Request status {}'.format(status))
-        return
+        return "not placed"
     
-    Parent.Log(ScriptName, '{} - {} - {}'.format(status, type(data), data))  # debug
-
     if 'competitive' not in data or 'rank' not in data['competitive']:
         Parent.Log(ScriptName, 'Remote service error.')
-        return
+        return "not placed"
 
     rank = data['competitive']['rank']
     return rank if rank is not None else "not placed"
