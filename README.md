@@ -1,4 +1,5 @@
 # !owrank: Overwatch rank
+
 A Streamlabs Chatbot command that shows the rank of the twitch hoster.
 The command can show rank information on multiple overwatch accounts.
 
@@ -9,7 +10,8 @@ Example:
 ```
 
 ## Installation
-Copy the `OwRank` folder in the streamlab chatbot script folder (usually it is `%appdata%\Roaming\Streamlabs\Streamlabs Chatbot\Twitch\Scripts`).
+First of all download the last version of the OwRank command from [here](https://github.com/lucarin91/owrank-streamlabs/releases).
+After the download, open the Streamlab Chatbot program and under the script section, install the .zip file by clicking the import buttom.
 
 After the installation, it is possible to configure the command using the UI interface in the script tab.
 
