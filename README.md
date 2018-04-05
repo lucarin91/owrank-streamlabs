@@ -16,7 +16,7 @@ After the download, open the *Streamlab Chatbot* program and under the script se
 After the installation, it is possible to configure the command using the UI interface in the script tab.
 
 ## Acknowledgement
-The command use [overwatch-api](https://github.com/alfg/overwatch-api) to get the rank statistics.
+The command use [OWAPI](https://github.com/Fuyukai/OWAPI) to get the rank statistics.
 
 ## License
 MIT license

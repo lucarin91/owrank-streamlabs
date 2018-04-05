@@ -18,7 +18,7 @@ ScriptName = "OwRank"
 Website = "https://github.com/lucarin91/overwatch-streamlabs"
 Description = "Return the hoster rank on Overwatch."
 Creator = "lucarin91"
-Version = "1.1.0"
+Version = "1.2.0"
 
 #---------------------------------------
 # Set Variables
@@ -71,19 +71,24 @@ def ReloadSettings(jsonData):
 #---------------------------------------
 def get_rank(username, region='eu'):
     """Return the rank of the username given in input."""
-    url = 'http://ow-api.herokuapp.com/profile/pc/{}/{}'.format(region, username)
-    res_raw = Parent.GetRequest(url, {})
+    url = 'https://owapi.net/api/v3/u/{}/stats'.format(username)
+    res_raw = Parent.GetRequest(url, {"User-Agent":"Linux/generic"})
     res = json.loads(res_raw)
     status, data = res['status'], json.loads(res['response'])
     if status != 200:
         Parent.Log(ScriptName, 'Request status {}'.format(status))
         return "not placed"
     
-    if 'competitive' not in data or 'rank' not in data['competitive']:
+    if not data\
+       or not region in data\
+       or not 'stats' in data[region]\
+       or not 'competitive' in data[region]['stats']\
+       or not 'overall_stats' in data[region]['stats']['competitive']\
+       or not 'comprank' in data[region]['stats']['competitive']['overall_stats']:
         Parent.Log(ScriptName, 'Remote service error.')
         return "not placed"
 
-    rank = data['competitive']['rank']
+    rank = data[region]['stats']['competitive']['overall_stats']['comprank']
     return rank if rank is not None else "not placed"
 
 def parse_conf(conf):
