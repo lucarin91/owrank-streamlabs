@@ -9,7 +9,7 @@ from os.path import isfile
 import clr
 clr.AddReference("IronPython.SQLite.dll")
 clr.AddReference("IronPython.Modules.dll")
-import datetime
+from datetime import datetime
 
 #---------------------------------------
 # [Required] Script Information
@@ -18,13 +18,15 @@ ScriptName = "OwRank"
 Website = "https://github.com/lucarin91/overwatch-streamlabs"
 Description = "Return the hoster rank on Overwatch."
 Creator = "lucarin91"
-Version = "1.2.0"
+Version = "2.0.0"
 
 #---------------------------------------
 # Set Variables
 #---------------------------------------
 _command_permission = "everyone"
 _command_info = ""
+_last_update = None
+_responce = None
 _battletag = []
 _region = 'eu'
 _message = "Rank:"
@@ -35,6 +37,7 @@ _cooldown = 10
 # [Required] Intialize Data (Only called on Load)
 #---------------------------------------
 def Init():
+    global _last_update, _responce
     settings = 'Services/Scripts/{}/settings.json'.format(ScriptName)
     if isfile(settings):
         with io.open(settings, mode='r', encoding='utf-8-sig') as f:
@@ -42,6 +45,9 @@ def Init():
             Parent.Log(ScriptName, 'Load json: {}'.format(string))
             conf = json.loads(string)
             parse_conf(conf)
+    
+    _responce = build_message()
+    _last_update = datetime.today()
 
 #---------------------------------------
 # [Required] Execute Data / Process Messages
@@ -51,14 +57,17 @@ def Execute(data):
         if data.GetParam(0).lower() == _command\
            and not Parent.IsOnCooldown(ScriptName, _command)\
            and Parent.HasPermission(data.User, _command_permission, _command_info):
-            responce = build_message()
-            Parent.SendTwitchMessage(responce)
+            Parent.SendTwitchMessage(_responce)
 
 #---------------------------------------
 # [Required] Tick Function
 #---------------------------------------
 def Tick():
-    pass
+    global _responce, _last_update
+    if (datetime.today() - _last_update).seconds > 30:
+        _responce = build_message()
+        _last_update = datetime.today()
+        Parent.Log(ScriptName, 'update rank! ({})'.format(_responce))
 
 def Unload():
     pass
